@@ -1,0 +1,21 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/infoteam-idp": "<rootDir>/../libs/infoteam-idp/src",
+    "@app/infoteam-idp/(.*)": "<rootDir>/../libs/infoteam-idp/src/$1",
+    "@lib/drizzle": "<rootDir>/../libs/drizzle/src",
+    "@lib/drizzle/(.*)": "<rootDir>/../libs/drizzle/src/$1",
+    "@lib/prisma": "<rootDir>/../libs/prisma/src",
+    "@lib/prisma/(.*)": "<rootDir>/../libs/prisma/src/$1"
+  }
+}
