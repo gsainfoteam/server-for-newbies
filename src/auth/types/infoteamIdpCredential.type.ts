@@ -1,4 +1,4 @@
 export type InfoteamIdpCredential = {
-  credentialMethod: 'infoteam-idp';
+  credentialMethod: 'infoteamIdp';
   idToken: string;
 };
