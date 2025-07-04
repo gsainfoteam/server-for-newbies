@@ -25,6 +25,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/jwt": "^11.0.0",
+    "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.0",
     "@types/bcrypt": "^5.0.2",
@@ -33,6 +34,8 @@
     "class-validator": "^0.14.2",
     "dotenv": "^17.0.1",
     "drizzle-orm": "^0.44.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
@@ -48,6 +51,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
+    "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.15.4",
     "@types/supertest": "^6.0.2",
     "drizzle-kit": "^0.31.4",
@@ -89,6 +93,7 @@
     "moduleNameMapper": {
       "^@app/infoteam-idp(|/.*)$": "<rootDir>/libs/infoteam-idp/src/$1",
       "^@lib/drizzle(|/.*)$": "<rootDir>/libs/drizzle/src/$1",
+      "^@lib/logger(|/.*)$": "<rootDir>/libs/logger/src/$1",
       "^@lib/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1"
     }
   }

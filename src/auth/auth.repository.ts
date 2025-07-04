@@ -1,4 +1,5 @@
 import * as schema from '@lib/drizzle/schema';
+import { Loggable } from '@lib/logger';
 import {
   Inject,
   Injectable,
@@ -7,6 +8,7 @@ import {
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 
+@Loggable()
 @Injectable()
 export class AuthRepository {
   constructor(
@@ -94,6 +96,12 @@ export class AuthRepository {
   }
 
   async deleteRefreshToken(token: string): Promise<void> {
+    await this.db
+      .delete(schema.refreshTokens)
+      .where(eq(schema.refreshTokens.token, token));
+  }
+
+  async deleteRefreshTokenByToken(token: string): Promise<void> {
     await this.db
       .delete(schema.refreshTokens)
       .where(eq(schema.refreshTokens.token, token));

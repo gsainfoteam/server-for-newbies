@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import * as schema from './schema';
 
 @Module({
   imports: [ConfigModule],
@@ -9,7 +10,9 @@ import { drizzle } from 'drizzle-orm/node-postgres';
       provide: 'DRIZZLE',
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        return drizzle(configService.getOrThrow<string>('DATABASE_URL'));
+        return drizzle(configService.getOrThrow<string>('DATABASE_URL'), {
+          schema,
+        });
       },
     },
   ],

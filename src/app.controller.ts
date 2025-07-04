@@ -1,12 +1,40 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import {
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  private readonly publishedAt: string;
 
+  constructor() {
+    this.publishedAt = new Date().toISOString();
+  }
+
+  @ApiOperation({
+    summary: 'Get information about the service',
+    description:
+      'Gets basic information about the service including name, version, and published date.',
+  })
+  @ApiOkResponse({
+    description: '성공',
+    example: {
+      name: 'infoteam-idp',
+      version: 'v2.0.0',
+      publishedAt: new Date().toISOString(),
+    },
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  info() {
+    return {
+      name: 'newbies',
+      version: '1.0.0',
+      publishedAt: this.publishedAt,
+    };
   }
 }

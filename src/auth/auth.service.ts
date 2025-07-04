@@ -16,7 +16,9 @@ import { ConfigService } from '@nestjs/config';
 import { LogoutReqDto } from './dto/req/logoutReq.dto';
 import { RefreshReqDto } from './dto/req/refreshReq.dto';
 import { SignupReqDto } from './dto/req/signupReq.dto';
+import { Loggable } from '@lib/logger';
 
+@Loggable()
 @Injectable()
 export class AuthService {
   private readonly accessTokenExpiresIn: number;
@@ -105,6 +107,7 @@ export class AuthService {
     if (!previousRefreshToken) {
       throw new UnauthorizedException('Invalid refresh token');
     }
+    await this.authRepository.deleteRefreshTokenByToken(refreshToken);
     const user = await this.authRepository.findUserByUuid(
       previousRefreshToken.userUuid,
     );
@@ -117,7 +120,7 @@ export class AuthService {
     const newRefreshToken = this.generateOpaqueToken();
     await this.authRepository.createRefreshToken({
       userUuid: user.uuid,
-      token: refreshToken,
+      token: newRefreshToken,
       expiresAt: new Date(Date.now() + this.refreshTokenExpiresIn * 1000),
     });
     return {
@@ -130,6 +133,12 @@ export class AuthService {
 
   async logout({ refreshToken }: LogoutReqDto): Promise<void> {
     await this.authRepository.deleteRefreshToken(refreshToken);
+  }
+
+  async getUserByUuid(
+    userUuid: string,
+  ): Promise<typeof schema.users.$inferSelect | undefined> {
+    return this.authRepository.findUserByUuid(userUuid);
   }
   /**
    * generate opaque token that does not have any meaning

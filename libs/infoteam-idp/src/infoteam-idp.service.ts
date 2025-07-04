@@ -28,6 +28,8 @@ export class InfoteamIdpService implements OnModuleInit {
   private readonly logger = new Logger(InfoteamIdpService.name);
   /** The url of infoteam idp service */
   private idpUrl: string;
+  /** The issuer of infoteam idp service */
+  private idpIssuer: string;
   /** The pk of the openid key */
   private openidPk: crypto.KeyObject;
   /** The client idp access token */
@@ -41,6 +43,7 @@ export class InfoteamIdpService implements OnModuleInit {
     private readonly jwtService: JwtService,
   ) {
     this.idpUrl = this.configService.getOrThrow<string>('IDP_URL');
+    this.idpIssuer = this.configService.getOrThrow<string>('IDP_ISSUER');
     this.clientAccessTokenExpireAt = new Date();
   }
 
@@ -114,7 +117,7 @@ export class InfoteamIdpService implements OnModuleInit {
     return this.jwtService
       .verifyAsync<IdTokenPayload>(idToken, {
         publicKey: this.openidPk.export({ format: 'pem', type: 'spki' }),
-        issuer: this.idpUrl,
+        issuer: this.idpIssuer,
       })
       .then(
         ({

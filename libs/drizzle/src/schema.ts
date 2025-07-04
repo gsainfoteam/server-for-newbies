@@ -1,4 +1,5 @@
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 
 export const users = pgTable('users', {
   uuid: uuid().primaryKey().defaultRandom(),
@@ -9,6 +10,19 @@ export const users = pgTable('users', {
 
 export const refreshTokens = pgTable('refresh_tokens', {
   token: varchar('token', { length: 255 }).primaryKey(),
-  userUuid: uuid('user_uuid').notNull(),
+  userUuid: uuid('user_uuid')
+    .notNull()
+    .references(() => users.uuid),
   expiresAt: timestamp({ withTimezone: true }),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+  refreshTokens: many(refreshTokens),
+}));
+
+export const refreshTokensRelations = relations(refreshTokens, ({ one }) => ({
+  user: one(users, {
+    fields: [refreshTokens.userUuid],
+    references: [users.uuid],
+  }),
+}));
