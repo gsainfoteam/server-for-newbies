@@ -1,4 +1,4 @@
-name: Update Database (Prod)
+name: Update Database
 
 on:
   push:
