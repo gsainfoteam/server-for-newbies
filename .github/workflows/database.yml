@@ -1,0 +1,29 @@
+name: Update Database (Prod)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - drizzle/**
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Migrate Database
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install drizzle
+        run: bun install
+
+      - name: Migrate Database
+        run: bun drizzle-kit migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
